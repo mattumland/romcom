@@ -27,6 +27,27 @@ var button = document.querySelector('.random-cover-button');
 var button = document.querySelector('.random-cover-button');
 button.addEventListener('click', updateCover);
 
+var formButton = document. querySelector('.make-new-button');
+formButton.addEventListener('click', switchToFormView)
+
+function switchToFormView() {
+  //hide home View
+  //hide saved view
+  //reveal form view
+}
+
+function switchToSavedView() {
+  //hide home View
+  //hide form view
+  //reveal saved view
+}
+
+function switchControls() {
+  //toggle home button
+  //toggle random button
+  //toggle save cover
+}
+
 function updateCover() {
   var currentCover = buildNewCover();
 
