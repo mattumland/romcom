@@ -30,9 +30,6 @@ button.addEventListener('click', updateCover);
 function updateCover() {
   var currentCover = buildNewCover();
 
-function updateCover() {
-  var currentCover = buildNewCover();
-
   coverImage.src = currentCover.cover;
   coverTitle.innerHTML = currentCover.title;
   firstDescriptor.innerHTML = currentCover.tagline1;
