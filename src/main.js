@@ -27,10 +27,12 @@ var button = document.querySelector('.random-cover-button');
 // Global view variables
 var homeView = document.querySelector('.main-cover');
 var savedView = document.querySelector('.saved-covers-section');
-var formView = document.querySelector('form');
+var formView = document.querySelector('.form-view');
 
 // global control variables
 var homeButton = document.querySelector('.home-button');
+var randomButton = document.querySelector('.random-cover-button');
+var saveButton = document.querySelector('.save-cover-button');
 
 var button = document.querySelector('.random-cover-button');
 button.addEventListener('click', updateCover);
@@ -38,13 +40,15 @@ button.addEventListener('click', updateCover);
 var formButton = document. querySelector('.make-new-button');
 formButton.addEventListener('click', switchToFormView)
 
-
-
 function switchToFormView() {
   homeView.classList.add('hidden'); //hide home view
   savedView.classList.add('hidden'); //hide saved view
-  formView.parentNode.classList.remove('hidden'); //reveal form
-  
+  formView.classList.remove('hidden'); //reveal form view
+  homeButton.classList.remove('hidden'); //reveal home button
+  randomButton.classList.add('hidden'); //hide random cover button
+  saveButton.classList.add('hidden'); //hide saved cover button
+
+
 }
 
 function switchToSavedView() {
