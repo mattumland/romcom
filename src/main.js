@@ -33,13 +33,15 @@ var formView = document.querySelector('.form-view');
 var homeButton = document.querySelector('.home-button');
 var randomButton = document.querySelector('.random-cover-button');
 var saveButton = document.querySelector('.save-cover-button');
+var formButton = document.querySelector('.make-new-button');
+var viewSavedButton = document.querySelector('.view-saved-button');
 
-var button = document.querySelector('.random-cover-button');
-button.addEventListener('click', updateCover);
+// event listeners
+randomButton.addEventListener('click', updateCover);
+formButton.addEventListener('click', switchToFormView);
+viewSavedButton.addEventListener('click', switchToSavedView);
 
-var formButton = document. querySelector('.make-new-button');
-formButton.addEventListener('click', switchToFormView)
-
+//functions
 function switchToFormView() {
   homeView.classList.add('hidden'); //hide home view
   savedView.classList.add('hidden'); //hide saved view
@@ -47,17 +49,18 @@ function switchToFormView() {
   homeButton.classList.remove('hidden'); //reveal home button
   randomButton.classList.add('hidden'); //hide random cover button
   saveButton.classList.add('hidden'); //hide saved cover button
-
-
 }
 
 function switchToSavedView() {
-  //hide home View
-  //hide form view
-  //reveal saved view
+  homeView.classList.add('hidden'); //hide home view
+  savedView.parentNode.classList.remove('hidden'); //reveal saved view
+  formView.classList.add('hidden'); //hide form view
+  homeButton.classList.remove('hidden'); //reveal home button
+  randomButton.classList.add('hidden'); //hide random cover button
+  saveButton.classList.add('hidden'); //hide saved cover button
 }
 
-function switchControls() {
+function switchToHomeView() {
   //toggle home button
   //toggle random button
   //toggle save cover
