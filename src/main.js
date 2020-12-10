@@ -17,12 +17,20 @@ function buildNewCover() {
   return new Cover(coverImgSrc, title, descriptor1, descriptor2);
 }
 
+// Global cover variables
 var coverImage = document.querySelector('.cover-image');
 var coverTitle = document.querySelector('.cover-title');
 var firstDescriptor = document.querySelector('.tagline-1');
 var secondDescriptor = document.querySelector('.tagline-2');
 var button = document.querySelector('.random-cover-button');
 
+// Global view variables
+var homeView = document.querySelector('.main-cover');
+var savedView = document.querySelector('.saved-covers-section');
+var formView = document.querySelector('form');
+
+// global control variables
+var homeButton = document.querySelector('.home-button');
 
 var button = document.querySelector('.random-cover-button');
 button.addEventListener('click', updateCover);
@@ -30,10 +38,13 @@ button.addEventListener('click', updateCover);
 var formButton = document. querySelector('.make-new-button');
 formButton.addEventListener('click', switchToFormView)
 
+
+
 function switchToFormView() {
-  //hide home View
-  //hide saved view
-  //reveal form view
+  homeView.classList.add('hidden'); //hide home view
+  savedView.classList.add('hidden'); //hide saved view
+  formView.parentNode.classList.remove('hidden'); //reveal form
+  
 }
 
 function switchToSavedView() {
