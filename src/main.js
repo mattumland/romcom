@@ -37,7 +37,7 @@ function updateCover() {
 }
 
 
-// create new book button
+// **** create new book button functionality ****
 
 var userCover = document.querySelector('input.user-cover');
 var userTitle = document.querySelector('input.user-title');
@@ -45,9 +45,10 @@ var userDescriptor1 = document.querySelector('input.user-desc1');
 var userDescriptor2 = document.querySelector('input.user-desc2');
 
 var createNewBookButton = document.querySelector('button.create-new-book-button');
-createNewBookButton.addEventListener('submit', createNewBook);
 
-function createNewBook() {
+createNewBookButton.addEventListener('submit', function(event) {
+  event.preventDefault();  // prevent reload??
+
   // push each piece of data into its respective array in data.js
   covers.push(userCover.value)
   titles.push(userTitle.value)
@@ -63,7 +64,8 @@ function createNewBook() {
 
   // when at home, should load THIS new cover
   // use unshift to add to front, then we can use index 0 to access the first one.
-}
+
+});
 
 
 // We've provided one function to get you started
