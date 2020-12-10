@@ -40,8 +40,9 @@ var viewSavedButton = document.querySelector('.view-saved-button');
 randomButton.addEventListener('click', updateCover);
 formButton.addEventListener('click', switchToFormView);
 viewSavedButton.addEventListener('click', switchToSavedView);
+homeButton.addEventListener('click', switchToHomeView);
 
-//functions
+//event handlers
 function switchToFormView() {
   homeView.classList.add('hidden'); //hide home view
   savedView.classList.add('hidden'); //hide saved view
@@ -61,10 +62,15 @@ function switchToSavedView() {
 }
 
 function switchToHomeView() {
-  //toggle home button
-  //toggle random button
-  //toggle save cover
+  homeView.classList.remove('hidden'); //reveal home view
+  savedView.parentNode.classList.add('hidden'); //hide saved view
+  formView.classList.add('hidden'); //hide form view
+  homeButton.classList.add('hidden'); //hide home button
+  randomButton.classList.remove('hidden'); //reveal cover button
+  saveButton.classList.remove('hidden'); //reveal cover button
 }
+
+// other functions
 
 function updateCover() {
   var currentCover = buildNewCover();
@@ -75,8 +81,6 @@ function updateCover() {
   secondDescriptor.innerHTML = currentCover.tagline2;
 }
 
-
-// We've provided one function to get you started
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
