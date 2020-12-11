@@ -17,15 +17,60 @@ function buildNewCover() {
   return new Cover(coverImgSrc, title, descriptor1, descriptor2);
 }
 
+// Global cover variables
 var coverImage = document.querySelector('.cover-image');
 var coverTitle = document.querySelector('.cover-title');
 var firstDescriptor = document.querySelector('.tagline-1');
 var secondDescriptor = document.querySelector('.tagline-2');
 var button = document.querySelector('.random-cover-button');
 
+// Global view variables
+var homeView = document.querySelector('.main-cover');
+var savedView = document.querySelector('.saved-covers-section');
+var formView = document.querySelector('.form-view');
 
-var button = document.querySelector('.random-cover-button');
-button.addEventListener('click', updateCover);
+// global control variables
+var homeButton = document.querySelector('.home-button');
+var randomButton = document.querySelector('.random-cover-button');
+var saveButton = document.querySelector('.save-cover-button');
+var formButton = document.querySelector('.make-new-button');
+var viewSavedButton = document.querySelector('.view-saved-button');
+
+// event listeners
+randomButton.addEventListener('click', updateCover);
+formButton.addEventListener('click', switchToFormView);
+viewSavedButton.addEventListener('click', switchToSavedView);
+homeButton.addEventListener('click', switchToHomeView);
+
+//event handlers
+function switchToFormView() {
+  homeView.classList.add('hidden'); //hide home view
+  savedView.classList.add('hidden'); //hide saved view
+  formView.classList.remove('hidden'); //reveal form view
+  homeButton.classList.remove('hidden'); //reveal home button
+  randomButton.classList.add('hidden'); //hide random cover button
+  saveButton.classList.add('hidden'); //hide saved cover button
+}
+
+function switchToSavedView() {
+  homeView.classList.add('hidden'); //hide home view
+  savedView.parentNode.classList.remove('hidden'); //reveal saved view
+  formView.classList.add('hidden'); //hide form view
+  homeButton.classList.remove('hidden'); //reveal home button
+  randomButton.classList.add('hidden'); //hide random cover button
+  saveButton.classList.add('hidden'); //hide saved cover button
+}
+
+function switchToHomeView() {
+  homeView.classList.remove('hidden'); //reveal home view
+  savedView.parentNode.classList.add('hidden'); //hide saved view
+  formView.classList.add('hidden'); //hide form view
+  homeButton.classList.add('hidden'); //hide home button
+  randomButton.classList.remove('hidden'); //reveal cover button
+  saveButton.classList.remove('hidden'); //reveal cover button
+}
+
+// other functions
 
 function updateCover() {
   var currentCover = buildNewCover();
@@ -67,8 +112,6 @@ createNewBookButton.addEventListener('submit', function(event) {
 
 });
 
-
-// We've provided one function to get you started
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
