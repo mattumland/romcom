@@ -97,25 +97,20 @@ var userDescriptor2 = document.querySelector('.user-desc2');
 var createNewBookButton = document.querySelector('.create-new-book-button');
 
 createNewBookButton.addEventListener('click', function(event) {
-
-  // push each piece of data into its respective array in data.js
   covers.push(userCover.value)
   titles.push(userTitle.value)
   descriptors.push(userDescriptor1.value)
   descriptors.push(userDescriptor2.value)
 
-  // build new cover from class and unshift that to the savedCovers, so we can access it when we go
-  // back to the home page
   var userCreatedCover = buildNewCover(userCover.value, userTitle.value, userDescriptor1.value, userDescriptor2.value);
   savedCovers.unshift(userCreatedCover);
   console.log(userCreatedCover)
 
   updateCover(userCreatedCover);
 
-  // change back to home view
   switchToHomeView();
 
-  event.preventDefault();  // prevent reload??
+  event.preventDefault();
 
 });
 
