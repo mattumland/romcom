@@ -1,28 +1,18 @@
 
-// Create variables targetting the relevant DOM elements here 👇
+window.addEventListener('load', function() {
+  var firstCover = createRandomCover();
+  updateCover(firstCover);
+});
 
-// We've provided a few variables below
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
-
-window.addEventListener('load', updateCover);
-
-function buildNewCover() {
-  var coverImgSrc = covers[getRandomIndex(covers)];
-  var title = titles[getRandomIndex(titles)];
-  var descriptor1 = descriptors[getRandomIndex(descriptors)];
-  var descriptor2 = descriptors[getRandomIndex(descriptors)];
-
-  return new Cover(coverImgSrc, title, descriptor1, descriptor2);
-}
 
 // Global cover variables
 var coverImage = document.querySelector('.cover-image');
 var coverTitle = document.querySelector('.cover-title');
 var firstDescriptor = document.querySelector('.tagline-1');
 var secondDescriptor = document.querySelector('.tagline-2');
-var button = document.querySelector('.random-cover-button');
 
 // Global view variables
 var homeView = document.querySelector('.main-cover');
@@ -37,7 +27,11 @@ var formButton = document.querySelector('.make-new-button');
 var viewSavedButton = document.querySelector('.view-saved-button');
 
 // event listeners
-randomButton.addEventListener('click', updateCover);
+randomButton.addEventListener('click', function() {
+  var randomCover = createRandomCover()
+  updateCover(randomCover)
+});
+
 formButton.addEventListener('click', switchToFormView);
 viewSavedButton.addEventListener('click', switchToSavedView);
 homeButton.addEventListener('click', switchToHomeView);
@@ -71,15 +65,54 @@ function switchToHomeView() {
 }
 
 // other functions
+function createRandomCover() {
+  var coverImgSrcRandom = covers[getRandomIndex(covers)];
+  var titleRandom = titles[getRandomIndex(titles)];
+  var descriptor1Random = descriptors[getRandomIndex(descriptors)];
+  var descriptor2Random = descriptors[getRandomIndex(descriptors)];
 
-function updateCover() {
-  var currentCover = buildNewCover();
+  return new Cover(coverImgSrcRandom, titleRandom, descriptor1Random, descriptor2Random)
+}
+
+function buildNewCover(cover, title, desc1, desc2) {
+  return new Cover(cover, title, desc1, desc2);
+}
+
+function updateCover(currentCover) {
 
   coverImage.src = currentCover.cover;
   coverTitle.innerHTML = currentCover.title;
   firstDescriptor.innerHTML = currentCover.tagline1;
   secondDescriptor.innerHTML = currentCover.tagline2;
 }
+
+
+// **** create new book button functionality ****
+
+var userCover = document.querySelector('.user-cover');
+var userTitle = document.querySelector('.user-title');
+var userDescriptor1 = document.querySelector('.user-desc1');
+var userDescriptor2 = document.querySelector('.user-desc2');
+
+var createNewBookButton = document.querySelector('.create-new-book-button');
+
+createNewBookButton.addEventListener('click', function(event) {
+  covers.push(userCover.value)
+  titles.push(userTitle.value)
+  descriptors.push(userDescriptor1.value)
+  descriptors.push(userDescriptor2.value)
+
+  var userCreatedCover = buildNewCover(userCover.value, userTitle.value, userDescriptor1.value, userDescriptor2.value);
+  savedCovers.unshift(userCreatedCover);
+  console.log(userCreatedCover)
+
+  updateCover(userCreatedCover);
+
+  switchToHomeView();
+
+  event.preventDefault();
+
+});
 
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
