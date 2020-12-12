@@ -114,6 +114,32 @@ createNewBookButton.addEventListener('click', function(event) {
 
 });
 
+// can we add data attribute to our covers?? how hard would that be?
+// or should we just use the cover name, since it's unique?
+//   maybe first iteration we can use cover name and then we could try adding/removing data
+//     attribute as a second iteration on this feature?
+function deleteCover() {
+  // grab the id of the current cover
+  // find that id in the array of savedCovers
+  // delete it using splice
+  // ask for confirmation using a modal??
+
+  var thisCover = document.querySelector('img')
+
+  thisCover.addEventListener('dblclick', function (e) {
+    // find it in the array
+    var searchTerm = thisCover.src;
+
+    // splice it out
+    for (let i = 0; i < savedCovers.length; i++) {
+      if (savedCovers[i].cover === searchTerm) {
+        savedCovers.splice(i, 1)
+      }
+    }
+  })
+
+}
+
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
