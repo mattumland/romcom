@@ -2,6 +2,7 @@
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
+var visibleCover = {};
 
 // **** Global cover variables ****
 var coverImage = document.querySelector('.cover-image');
@@ -14,8 +15,6 @@ var homeView = document.querySelector('.main-cover');
 var savedView = document.querySelector('.saved-view');
 var formView = document.querySelector('.form-view');
 var savedCoversSection = document.querySelector('.saved-covers-section')
-
-var altSavedView = document.getElementById("targetThis");
 
 // **** global control variables ****
 var homeButton = document.querySelector('.home-button');
@@ -38,7 +37,7 @@ randomButton.addEventListener('click', function() {
 formButton.addEventListener('click', switchToFormView);
 viewSavedButton.addEventListener('click', switchToSavedView);
 homeButton.addEventListener('click', switchToHomeView);
-saveButton.addEventListener('click', saveCurrentCover)
+saveButton.addEventListener('click', saveVisibleCover)
 
 // **** view switch functions ****
 function switchToFormView() {
@@ -58,8 +57,9 @@ function switchToSavedView() {
   randomButton.classList.add("hidden"); //hide random cover button
   saveButton.classList.add("hidden"); //hide saved cover button
 
+  var result = "";
   for (var i = 0; i < savedCovers.length; i++) {
-    var injectThis = `
+    result += `
       <section class='mini-cover'>
         <img class="cover-image" src=${savedCovers[i].cover}>
         <h2 class="cover-title">${savedCovers[i].title}</h2>
@@ -67,9 +67,9 @@ function switchToSavedView() {
         <img class="price-tag" src="./assets/price.png">
         <img class="overlay" src="./assets/overlay.png">
       </section>
-    `;
-    savedCoversSection.innerHTML = injectThis;
-  }
+    `
+  };
+  savedCoversSection.innerHTML = result;
 }
 
 function switchToHomeView() {
@@ -82,22 +82,21 @@ function switchToHomeView() {
 }
 
 // **** other functions ****
+function buildNewCover(cover, title, desc1, desc2) {
+  visibleCover = new Cover(cover, title, desc1, desc2);
+  return visibleCover;
+}
 function createRandomCover() {
   var coverImgSrcRandom = covers[getRandomIndex(covers)];
   var titleRandom = titles[getRandomIndex(titles)];
   var descriptor1Random = descriptors[getRandomIndex(descriptors)];
   var descriptor2Random = descriptors[getRandomIndex(descriptors)];
 
-  return new Cover(coverImgSrcRandom, titleRandom, descriptor1Random, descriptor2Random)
-}
+  return buildNewCover(coverImgSrcRandom, titleRandom, descriptor1Random, descriptor2Random);
 
-function buildNewCover(cover, title, desc1, desc2) {
-  ///update global currentCover variable
-  return new Cover(cover, title, desc1, desc2);
 }
 
 function updateCover(currentCover) {
-
   coverImage.src = currentCover.cover;
   coverTitle.innerHTML = currentCover.title;
   firstDescriptor.innerHTML = currentCover.tagline1;
@@ -124,9 +123,10 @@ createNewBookButton.addEventListener('click', function(event) {
 
   var userCreatedCover = buildNewCover(userCover.value, userTitle.value, userDescriptor1.value, userDescriptor2.value);
 
-  savedCovers.unshift(userCreatedCover); //this could cause repeat covers if a user inputs the same cover data into the form twice
+  // savedCovers.unshift(userCreatedCover); //this could cause repeat covers if a user inputs the same cover data into the form twice
 
   updateCover(userCreatedCover);
+  saveVisibleCover();
 
   switchToHomeView();
 
@@ -135,12 +135,8 @@ createNewBookButton.addEventListener('click', function(event) {
 });
 
 // **** Save current cover functionality ****
-
-function saveCurrentCover() {
-
-  // THIS CURRENTLY PRODUCES AN UNDEFINED COVER AND ADDS IT TO savedCovers. HOW DO WE ACCESS THE VALUE OF THE COVER THAT IS CURRENTLY BEING DISPLAYED?
-  var visibleCover = new Cover(coverImage.value, coverTitle.value, descriptor1.value, descriptor2.value) //create new cover object based on the currently visible cover
-  // console.log(coverImage.value);
+function saveVisibleCover() {
+  console.log(savedCovers);
   var isRepeat = false;
   for (var i = 0; i < savedCovers.length; i++) {
     if (visibleCover === savedCovers[i]) {
@@ -150,5 +146,5 @@ function saveCurrentCover() {
   if (isRepeat === false) {
     savedCovers.unshift(visibleCover);
   }
-  console.log(savedCovers);
+  // console.log(savedCovers);
 }
