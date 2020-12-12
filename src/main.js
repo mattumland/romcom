@@ -55,15 +55,20 @@ function switchToSavedView() {
   randomButton.classList.add("hidden"); //hide random cover button
   saveButton.classList.add("hidden"); //hide saved cover button
 
-  //loop for the length of savedCovers
-  //access cover object at i
-  //create cover elements with mini cover styles
   for (var i = 0; i < savedCovers.length; i++) {
-    //create the image element and provide a src from savedCovers array
-    var newMiniCoverImg = document.createElement('img');
-    newMiniCoverImg.classList.add('mini-cover');
-    newMiniCoverImg.src = savedCovers[i].cover;
-    savedView.appendChild(newMiniCoverImg);
+    var miniCover = document.createElement('section');
+    miniCover.classList.add('mini-cover');
+    savedView.appendChild(miniCover);
+      //create the image element and provide a src from savedCovers array and style
+      var newMiniCoverImg = document.createElement('img');
+      newMiniCoverImg.src = savedCovers[i].cover;
+      newMiniCoverImg.classList.add('mini-cover');
+      miniCover.appendChild(newMiniCoverImg);
+      //create the title element and provide content from savedCovers and style
+      var newMiniTitle = document.createElement('h2');
+      newMiniTitle.innerText(savedCovers[i].title);
+      newMiniTitle.classList.add('.cover-title');
+      savedView.appendChild(newMiniTitle);
   }
 
 }
@@ -133,8 +138,8 @@ createNewBookButton.addEventListener('click', function(event) {
 
 function saveCurrentCover() {
 
-
-  var visibleCover = new Cover(coverImage.value, coverTitle.value, descriptor1.value, descriptor2.value) //create new cover object based on the currently visible cover THIS CURRENTLY PRODUCES AN UNDEFINED COVER. HOW DO WE ACCESS THE VALUE OF THE COVER THAT IS CURRENTLY BEING DISPLAYED?
+// THIS CURRENTLY PRODUCES AN UNDEFINED COVER AND ADDS IT TO savedCovers. HOW DO WE ACCESS THE VALUE OF THE COVER THAT IS CURRENTLY BEING DISPLAYED?
+  var visibleCover = new Cover(coverImage.value, coverTitle.value, descriptor1.value, descriptor2.value) //create new cover object based on the currently visible cover
   // console.log(coverImage.value);
   var isRepeat = false;
   for (var i = 0; i < savedCovers.length; i++){
