@@ -15,8 +15,6 @@ var savedView = document.querySelector('.saved-view');
 var formView = document.querySelector('.form-view');
 var savedCoversSection = document.querySelector('.saved-covers-section')
 
-var altSavedView = document.getElementById("targetThis");
-
 // **** global control variables ****
 var homeButton = document.querySelector('.home-button');
 var randomButton = document.querySelector('.random-cover-button');
@@ -58,18 +56,21 @@ function switchToSavedView() {
   randomButton.classList.add("hidden"); //hide random cover button
   saveButton.classList.add("hidden"); //hide saved cover button
 
+  var result = "";
+
   for (var i = 0; i < savedCovers.length; i++) {
-    var injectThis = `
-      <section class='mini-cover'>
-        <img class="cover-image" src=${savedCovers[i].cover}>
+    result += `
+      <section class='mini-cover' >
+        <img class="cover-image" data-id=${savedCovers[i].id} src=${savedCovers[i].cover}>
         <h2 class="cover-title">${savedCovers[i].title}</h2>
         <h3 class="tagline">A tale of <span class="tagline-1">${savedCovers[i].tagline1}</span> and <span class="tagline-2">${savedCovers[i].tagline2}</span></h3>
         <img class="price-tag" src="./assets/price.png">
         <img class="overlay" src="./assets/overlay.png">
       </section>
-    `;
-    savedCoversSection.innerHTML = injectThis;
-  }
+    `
+  };
+
+  savedCoversSection.innerHTML = result;
 }
 
 function switchToHomeView() {
@@ -135,50 +136,36 @@ createNewBookButton.addEventListener('click', function(event) {
 });
 
 
-// can we add data attribute to our covers?? how hard would that be?
-// or should we just use the cover name, since it's unique?
-//   maybe first iteration we can use cover name and then we could try adding/removing data
-//     attribute as a second iteration on this feature?
-function deleteCover() {
-  // grab the id of the current cover
-  // find that id in the array of savedCovers
-  // delete it using splice
-  // ask for confirmation using a modal??
+var savedSectionSelector = document.querySelector('.saved-covers-section');
+savedSectionSelector.addEventListener('dblclick', function(e) {
+  var deleteThis = e.target.getAttribute('data-id');
+  console.log(deleteThis)
 
-  var thisCover = document.querySelector('img')
+  for (let i = 0; i < savedCovers.length; i++) {
 
-  thisCover.addEventListener('dblclick', function (e) {
-    // find it in the array
-    var searchTerm = thisCover.src;
-
-    // splice it out
-    for (let i = 0; i < savedCovers.length; i++) {
-      if (savedCovers[i].cover === searchTerm) {
-        savedCovers.splice(i, 1)
-      }
+    if (savedCovers[i].id === deleteThis) {
+      console.log(savedCovers)
+      return savedCovers.splice(i, 1);
     }
-  })
-
-}
+  }
+})
 
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
+
 // **** Save current cover functionality ****
 
 function saveCurrentCover() {
+  var savedCover = coverImage.src
+  var savedTitle = coverTitle.innerHTML
+  var savedDesc1 = firstDescriptor.innerHTML
+  var savedDesc2 = secondDescriptor.innerHTML
 
-  // THIS CURRENTLY PRODUCES AN UNDEFINED COVER AND ADDS IT TO savedCovers. HOW DO WE ACCESS THE VALUE OF THE COVER THAT IS CURRENTLY BEING DISPLAYED?
-  var visibleCover = new Cover(coverImage.value, coverTitle.value, descriptor1.value, descriptor2.value) //create new cover object based on the currently visible cover
-  // console.log(coverImage.value);
-  var isRepeat = false;
-  for (var i = 0; i < savedCovers.length; i++) {
-    if (visibleCover === savedCovers[i]) {
-      isRepeat = true
-    }
+  var savedCover = new Cover(savedCover, savedTitle, savedDesc1, savedDesc2)
+
+  if (!savedCovers.includes(savedCover)) {
+    savedCovers.push(savedCover)
   }
-  if (isRepeat === false) {
-    savedCovers.unshift(visibleCover);
-  }
-  console.log(savedCovers);
+
 }
