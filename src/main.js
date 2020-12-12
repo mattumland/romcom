@@ -1,4 +1,4 @@
-
+// load random cover on initial load of page
 window.addEventListener('load', function() {
   var firstCover = createRandomCover();
   updateCover(firstCover);
@@ -65,6 +65,8 @@ function switchToHomeView() {
 }
 
 // other functions
+// TODO can we streamline into one function that creates a cover, then we can feed it whatever we want
+
 function createRandomCover() {
   var coverImgSrcRandom = covers[getRandomIndex(covers)];
   var titleRandom = titles[getRandomIndex(titles)];
@@ -78,8 +80,8 @@ function buildNewCover(cover, title, desc1, desc2) {
   return new Cover(cover, title, desc1, desc2);
 }
 
+// TODO are we sure that create and update can't be combined??  would there be a case to create but not update and vice versa?
 function updateCover(currentCover) {
-
   coverImage.src = currentCover.cover;
   coverTitle.innerHTML = currentCover.title;
   firstDescriptor.innerHTML = currentCover.tagline1;
@@ -88,7 +90,6 @@ function updateCover(currentCover) {
 
 
 // **** create new book button functionality ****
-
 var userCover = document.querySelector('.user-cover');
 var userTitle = document.querySelector('.user-title');
 var userDescriptor1 = document.querySelector('.user-desc1');
@@ -97,6 +98,9 @@ var userDescriptor2 = document.querySelector('.user-desc2');
 var createNewBookButton = document.querySelector('.create-new-book-button');
 
 createNewBookButton.addEventListener('click', function(event) {
+  event.preventDefault();
+
+  // TODO is there a better way to input a cover??? using the location of the file is garbage!!
   covers.push(userCover.value)
   titles.push(userTitle.value)
   descriptors.push(userDescriptor1.value)
@@ -109,10 +113,7 @@ createNewBookButton.addEventListener('click', function(event) {
   updateCover(userCreatedCover);
 
   switchToHomeView();
-
-  event.preventDefault();
-
-});
+ });
 
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
