@@ -2,6 +2,7 @@
 var savedCovers = [
   new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
 ];
+var visibleCover = {};
 
 // **** Global cover variables ****
 var coverImage = document.querySelector('.cover-image');
@@ -36,7 +37,7 @@ randomButton.addEventListener('click', function() {
 formButton.addEventListener('click', switchToFormView);
 viewSavedButton.addEventListener('click', switchToSavedView);
 homeButton.addEventListener('click', switchToHomeView);
-saveButton.addEventListener('click', saveCurrentCover)
+saveButton.addEventListener('click', saveVisibleCover)
 
 // **** view switch functions ****
 function switchToFormView() {
@@ -69,7 +70,6 @@ function switchToSavedView() {
       </section>
     `
   };
-
   savedCoversSection.innerHTML = result;
 }
 
@@ -83,22 +83,21 @@ function switchToHomeView() {
 }
 
 // **** other functions ****
+function buildNewCover(cover, title, desc1, desc2) {
+  visibleCover = new Cover(cover, title, desc1, desc2);
+  return visibleCover;
+}
 function createRandomCover() {
   var coverImgSrcRandom = covers[getRandomIndex(covers)];
   var titleRandom = titles[getRandomIndex(titles)];
   var descriptor1Random = descriptors[getRandomIndex(descriptors)];
   var descriptor2Random = descriptors[getRandomIndex(descriptors)];
 
-  return new Cover(coverImgSrcRandom, titleRandom, descriptor1Random, descriptor2Random)
-}
+  return buildNewCover(coverImgSrcRandom, titleRandom, descriptor1Random, descriptor2Random);
 
-function buildNewCover(cover, title, desc1, desc2) {
-  ///update global currentCover variable
-  return new Cover(cover, title, desc1, desc2);
 }
 
 function updateCover(currentCover) {
-
   coverImage.src = currentCover.cover;
   coverTitle.innerHTML = currentCover.title;
   firstDescriptor.innerHTML = currentCover.tagline1;
@@ -127,9 +126,10 @@ createNewBookButton.addEventListener('click', function(event) {
 
   var userCreatedCover = buildNewCover(userCover.value, userTitle.value, userDescriptor1.value, userDescriptor2.value);
 
-  savedCovers.unshift(userCreatedCover); //this could cause repeat covers if a user inputs the same cover data into the form twice
+  // savedCovers.unshift(userCreatedCover); //this could cause repeat covers if a user inputs the same cover data into the form twice
 
   updateCover(userCreatedCover);
+  saveVisibleCover();
 
   switchToHomeView();
 });
@@ -153,7 +153,7 @@ function getRandomIndex(array) {
 
 // **** Save current cover functionality ****
 
-function saveCurrentCover() {
+function saveVisibleCover() {
   var savedCover = coverImage.src
   var savedTitle = coverTitle.innerHTML
   var savedDesc1 = firstDescriptor.innerHTML
@@ -164,5 +164,4 @@ function saveCurrentCover() {
   if (!savedCovers.includes(savedCover)) {
     savedCovers.push(savedCover)
   }
-
 }
