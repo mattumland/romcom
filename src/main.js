@@ -12,7 +12,7 @@ var secondDescriptor = document.querySelector('.tagline-2');
 var homeView = document.querySelector('.main-cover');
 var savedView = document.querySelector('.saved-view');
 var formView = document.querySelector('.form-view');
-var savedCoversSection = document.querySelector('.saved-covers-section')
+var savedCoversSection = document.querySelector('.saved-covers-section');
 var savedSectionSelector = document.querySelector('.saved-covers-section');
 
 // **** global control variables ****
@@ -36,16 +36,16 @@ window.addEventListener('load', function() {
 });
 
 randomButton.addEventListener('click', function() {
-  var randomCover = createRandomCover()
-  updateCover(randomCover)
+  var randomCover = createRandomCover();
+  updateCover(randomCover);
 });
 
 formButton.addEventListener('click', switchToFormView);
 viewSavedButton.addEventListener('click', switchToSavedView);
 homeButton.addEventListener('click', switchToHomeView);
-saveButton.addEventListener('click', saveVisibleCover)
+saveButton.addEventListener('click', saveVisibleCover);
 
-// **** create new book button functionality ****
+// **** event listener:  create new book button functionality ****
 createNewBookButton.addEventListener('click', function(event) {
   event.preventDefault();
 
@@ -61,6 +61,7 @@ createNewBookButton.addEventListener('click', function(event) {
   switchToHomeView();
 });
 
+// **** event listener:  double click to delete ****
 savedSectionSelector.addEventListener('dblclick', function(e) {
   var deleteThis = e.target.getAttribute('data-id');
 
@@ -69,6 +70,7 @@ savedSectionSelector.addEventListener('dblclick', function(e) {
       savedCovers.splice(i, 1);
     }
   }
+
   switchToSavedView();
 })
 
@@ -83,14 +85,14 @@ function switchToFormView() {
 }
 
 function switchToSavedView() {
+  var result = "";
+
   homeView.classList.add("hidden"); //hide home view
   savedView.classList.remove("hidden"); //reveal saved view
   formView.classList.add("hidden"); //hide form view
   homeButton.classList.remove("hidden"); //reveal home button
   randomButton.classList.add("hidden"); //hide random cover button
   saveButton.classList.add("hidden"); //hide saved cover button
-
-  var result = "";
 
   for (var i = 0; i < savedCovers.length; i++) {
     result += `
@@ -102,7 +104,8 @@ function switchToSavedView() {
         <img class="overlay" src="./assets/overlay.png">
       </section>
     `
-  };
+  }
+
   savedCoversSection.innerHTML = result;
 }
 
@@ -125,6 +128,7 @@ function saveVisibleCover() {
 
 function buildNewCover(cover, title, desc1, desc2) {
   visibleCover = new Cover(cover, title, desc1, desc2);
+
   return visibleCover;
 }
 
