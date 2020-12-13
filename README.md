@@ -6,6 +6,14 @@ RomCom - Create your own romantic comedy cover (or see/save some random covers!)
 
 People say that romance novels are formulaic. Well … maybe that’s true. We’ve built an app that generates romance novel covers!
 
+## Technologies
+
+This application uses HTML, CSS, and vanilla JavaScript.
+
+## Deployed App
+
+
+
 ## Set Up
 
 Feel free to fork our repository and use it locally. 
@@ -25,3 +33,13 @@ Feel free to fork our repository and use it locally.
   delete covers from your list by double clicking the cover.
 * When you click on Make Your Own Cover, you can then create your very own cover.
 * We can't wait to see what you create!
+
+## Future Editions
+
+In the future we would like to do more error handling and better protection against duplicates. We could also envision 
+using a modal to display the custom cover that a user creates, as well as the ability to drag and drop covers on the 
+Saved Covers view.
+
+## Contributors
+Nikki Petersen and Matt Umland worked together on this team, with code reviews performed by various mentors. 
+Thank you to everyone who gave advice (which we may or may not have followed).
