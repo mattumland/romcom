@@ -1,7 +1,5 @@
 // **** Global variables, general ****
-var savedCovers = [
-  new Cover("http://3.bp.blogspot.com/-iE4p9grvfpQ/VSfZT0vH2UI/AAAAAAAANq8/wwQZssi-V5g/s1600/Do%2BNot%2BForsake%2BMe%2B-%2BImage.jpg", "Sunsets and Sorrows", "sunsets", "sorrows")
-];
+var savedCovers = [];
 var visibleCover = {};
 
 // **** Global cover variables ****
@@ -14,7 +12,8 @@ var secondDescriptor = document.querySelector('.tagline-2');
 var homeView = document.querySelector('.main-cover');
 var savedView = document.querySelector('.saved-view');
 var formView = document.querySelector('.form-view');
-var savedCoversSection = document.querySelector('.saved-covers-section')
+var savedCoversSection = document.querySelector('.saved-covers-section');
+var savedSectionSelector = document.querySelector('.saved-covers-section');
 
 // **** global control variables ****
 var homeButton = document.querySelector('.home-button');
@@ -23,6 +22,13 @@ var saveButton = document.querySelector('.save-cover-button');
 var formButton = document.querySelector('.make-new-button');
 var viewSavedButton = document.querySelector('.view-saved-button');
 
+// **** global user-created cover variables ****
+var userCover = document.querySelector('.user-cover');
+var userTitle = document.querySelector('.user-title');
+var userDescriptor1 = document.querySelector('.user-desc1');
+var userDescriptor2 = document.querySelector('.user-desc2');
+var createNewBookButton = document.querySelector('.create-new-book-button');
+
 // **** event listeners ****
 window.addEventListener('load', function() {
   var firstCover = createRandomCover();
@@ -30,14 +36,43 @@ window.addEventListener('load', function() {
 });
 
 randomButton.addEventListener('click', function() {
-  var randomCover = createRandomCover()
-  updateCover(randomCover)
+  var randomCover = createRandomCover();
+  updateCover(randomCover);
 });
 
 formButton.addEventListener('click', switchToFormView);
 viewSavedButton.addEventListener('click', switchToSavedView);
 homeButton.addEventListener('click', switchToHomeView);
-saveButton.addEventListener('click', saveVisibleCover)
+saveButton.addEventListener('click', saveVisibleCover);
+
+// **** event listener:  create new book button functionality ****
+createNewBookButton.addEventListener('click', function(event) {
+  event.preventDefault();
+
+  covers.push(userCover.value);
+  titles.push(userTitle.value);
+  descriptors.push(userDescriptor1.value);
+  descriptors.push(userDescriptor2.value);
+
+  var userCreatedCover = buildNewCover(userCover.value, userTitle.value, userDescriptor1.value, userDescriptor2.value);
+  updateCover(userCreatedCover);
+
+  saveVisibleCover();
+  switchToHomeView();
+});
+
+// **** event listener:  double click to delete ****
+savedSectionSelector.addEventListener('dblclick', function(e) {
+  var deleteThis = e.target.getAttribute('data-id');
+
+  for (let i = 0; i < savedCovers.length; i++) {
+    if (savedCovers[i].id == deleteThis) {
+      savedCovers.splice(i, 1);
+    }
+  }
+
+  switchToSavedView();
+})
 
 // **** view switch functions ****
 function switchToFormView() {
@@ -50,6 +85,8 @@ function switchToFormView() {
 }
 
 function switchToSavedView() {
+  var result = "";
+
   homeView.classList.add("hidden"); //hide home view
   savedView.classList.remove("hidden"); //reveal saved view
   formView.classList.add("hidden"); //hide form view
@@ -57,19 +94,18 @@ function switchToSavedView() {
   randomButton.classList.add("hidden"); //hide random cover button
   saveButton.classList.add("hidden"); //hide saved cover button
 
-  var result = "";
-
   for (var i = 0; i < savedCovers.length; i++) {
     result += `
       <section class='mini-cover' >
         <img class="cover-image" data-id=${savedCovers[i].id} src=${savedCovers[i].cover}>
-        <h2 class="cover-title">${savedCovers[i].title}</h2>
-        <h3 class="tagline">A tale of <span class="tagline-1">${savedCovers[i].tagline1}</span> and <span class="tagline-2">${savedCovers[i].tagline2}</span></h3>
-        <img class="price-tag" src="./assets/price.png">
+        <h2 class="cover-title" data-id=${savedCovers[i].id}>${savedCovers[i].title}</h2>
+        <h3 class="tagline" data-id=${savedCovers[i].id}>A tale of <span class="tagline-1" data-id=${savedCovers[i].id}>${savedCovers[i].tagline1}</span> and <span class="tagline-2" data-id=${savedCovers[i].id}>${savedCovers[i].tagline2}</span></h3>
+        <img class="price-tag" src="./assets/price.png" data-id=${savedCovers[i].id}>
         <img class="overlay" src="./assets/overlay.png">
       </section>
     `
-  };
+  }
+
   savedCoversSection.innerHTML = result;
 }
 
@@ -83,10 +119,19 @@ function switchToHomeView() {
 }
 
 // **** other functions ****
+
+function saveVisibleCover() {
+  if (!savedCovers.includes(visibleCover)) {
+    savedCovers.push(visibleCover);
+  }
+}
+
 function buildNewCover(cover, title, desc1, desc2) {
   visibleCover = new Cover(cover, title, desc1, desc2);
+
   return visibleCover;
 }
+
 function createRandomCover() {
   var coverImgSrcRandom = covers[getRandomIndex(covers)];
   var titleRandom = titles[getRandomIndex(titles)];
@@ -94,7 +139,6 @@ function createRandomCover() {
   var descriptor2Random = descriptors[getRandomIndex(descriptors)];
 
   return buildNewCover(coverImgSrcRandom, titleRandom, descriptor1Random, descriptor2Random);
-
 }
 
 function updateCover(currentCover) {
@@ -106,62 +150,4 @@ function updateCover(currentCover) {
 
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
-}
-
-// **** create new book button functionality ****
-var userCover = document.querySelector('.user-cover');
-var userTitle = document.querySelector('.user-title');
-var userDescriptor1 = document.querySelector('.user-desc1');
-var userDescriptor2 = document.querySelector('.user-desc2');
-
-var createNewBookButton = document.querySelector('.create-new-book-button');
-
-createNewBookButton.addEventListener('click', function(event) {
-  event.preventDefault();
-
-  covers.push(userCover.value)
-  titles.push(userTitle.value)
-  descriptors.push(userDescriptor1.value)
-  descriptors.push(userDescriptor2.value)
-
-  var userCreatedCover = buildNewCover(userCover.value, userTitle.value, userDescriptor1.value, userDescriptor2.value);
-
-  // savedCovers.unshift(userCreatedCover); //this could cause repeat covers if a user inputs the same cover data into the form twice
-
-  updateCover(userCreatedCover);
-  saveVisibleCover();
-
-  switchToHomeView();
-});
-
-
-var savedSectionSelector = document.querySelector('.saved-covers-section');
-savedSectionSelector.addEventListener('dblclick', function(e) {
-  var deleteThis = e.target.getAttribute('data-id');
-
-  for (let i = 0; i < savedCovers.length; i++) {
-    if (savedCovers[i].id == deleteThis) {
-      savedCovers.splice(i, 1);
-    }
-  }
-  switchToSavedView();
-})
-
-function getRandomIndex(array) {
-  return Math.floor(Math.random() * array.length);
-}
-
-// **** Save current cover functionality ****
-
-function saveVisibleCover() {
-  var savedCover = coverImage.src
-  var savedTitle = coverTitle.innerHTML
-  var savedDesc1 = firstDescriptor.innerHTML
-  var savedDesc2 = secondDescriptor.innerHTML
-
-  var savedCover = new Cover(savedCover, savedTitle, savedDesc1, savedDesc2)
-
-  if (!savedCovers.includes(savedCover)) {
-    savedCovers.push(savedCover)
-  }
 }
