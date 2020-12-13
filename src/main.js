@@ -118,6 +118,8 @@ var userDescriptor2 = document.querySelector('.user-desc2');
 var createNewBookButton = document.querySelector('.create-new-book-button');
 
 createNewBookButton.addEventListener('click', function(event) {
+  event.preventDefault();
+
   covers.push(userCover.value)
   titles.push(userTitle.value)
   descriptors.push(userDescriptor1.value)
@@ -130,24 +132,19 @@ createNewBookButton.addEventListener('click', function(event) {
   updateCover(userCreatedCover);
 
   switchToHomeView();
-
-  event.preventDefault();
-
 });
 
 
 var savedSectionSelector = document.querySelector('.saved-covers-section');
 savedSectionSelector.addEventListener('dblclick', function(e) {
   var deleteThis = e.target.getAttribute('data-id');
-  console.log(deleteThis)
 
   for (let i = 0; i < savedCovers.length; i++) {
-
-    if (savedCovers[i].id === deleteThis) {
-      console.log(savedCovers)
-      return savedCovers.splice(i, 1);
+    if (savedCovers[i].id == deleteThis) {
+      savedCovers.splice(i, 1);
     }
   }
+  switchToSavedView();
 })
 
 function getRandomIndex(array) {
