@@ -58,10 +58,11 @@ function switchToSavedView() {
   saveButton.classList.add("hidden"); //hide saved cover button
 
   var result = "";
+
   for (var i = 0; i < savedCovers.length; i++) {
     result += `
-      <section class='mini-cover'>
-        <img class="cover-image" src=${savedCovers[i].cover}>
+      <section class='mini-cover' >
+        <img class="cover-image" data-id=${savedCovers[i].id} src=${savedCovers[i].cover}>
         <h2 class="cover-title">${savedCovers[i].title}</h2>
         <h3 class="tagline">A tale of <span class="tagline-1">${savedCovers[i].tagline1}</span> and <span class="tagline-2">${savedCovers[i].tagline2}</span></h3>
         <img class="price-tag" src="./assets/price.png">
@@ -116,6 +117,8 @@ var userDescriptor2 = document.querySelector('.user-desc2');
 var createNewBookButton = document.querySelector('.create-new-book-button');
 
 createNewBookButton.addEventListener('click', function(event) {
+  event.preventDefault();
+
   covers.push(userCover.value)
   titles.push(userTitle.value)
   descriptors.push(userDescriptor1.value)
@@ -129,22 +132,36 @@ createNewBookButton.addEventListener('click', function(event) {
   saveVisibleCover();
 
   switchToHomeView();
-
-  event.preventDefault();
-
 });
 
-// **** Save current cover functionality ****
-function saveVisibleCover() {
-  console.log(savedCovers);
-  var isRepeat = false;
-  for (var i = 0; i < savedCovers.length; i++) {
-    if (visibleCover === savedCovers[i]) {
-      isRepeat = true
+
+var savedSectionSelector = document.querySelector('.saved-covers-section');
+savedSectionSelector.addEventListener('dblclick', function(e) {
+  var deleteThis = e.target.getAttribute('data-id');
+
+  for (let i = 0; i < savedCovers.length; i++) {
+    if (savedCovers[i].id == deleteThis) {
+      savedCovers.splice(i, 1);
     }
   }
-  if (isRepeat === false) {
-    savedCovers.unshift(visibleCover);
+  switchToSavedView();
+})
+
+function getRandomIndex(array) {
+  return Math.floor(Math.random() * array.length);
+}
+
+// **** Save current cover functionality ****
+
+function saveVisibleCover() {
+  var savedCover = coverImage.src
+  var savedTitle = coverTitle.innerHTML
+  var savedDesc1 = firstDescriptor.innerHTML
+  var savedDesc2 = secondDescriptor.innerHTML
+
+  var savedCover = new Cover(savedCover, savedTitle, savedDesc1, savedDesc2)
+
+  if (!savedCovers.includes(savedCover)) {
+    savedCovers.push(savedCover)
   }
-  // console.log(savedCovers);
 }
